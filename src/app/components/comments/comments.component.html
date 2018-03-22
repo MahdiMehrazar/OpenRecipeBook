@@ -1,0 +1,52 @@
+<hr class="styled">
+<h4>Comments:</h4>
+
+<div *ngIf="recipe">
+  <app-comment *ngFor="let comment of recipe.comments" [comment]="comment" [recipe]="recipe"></app-comment>
+</div>
+
+<div *ngIf="!isAuthenticated()">
+  <h6>You must be logged in to post a comment.</h6>
+</div>
+
+<div class="alert alert-success" *ngIf="success">
+  Comment posted!
+</div>
+
+<div class="alert alert-success" *ngIf="successDelete">
+  Comment deleted!
+</div>
+
+<hr>
+
+<div *ngIf="isAuthenticated()">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset=2">
+      <form (ngSubmit)="onSubmitComment(commentForm)" #commentForm="ngForm">
+        <div class="form-group">
+          <label for="comment">
+            <h6>Post a comment:</h6>
+          </label>
+          <textarea required id="comment" name="comment" #comment="ngModel" ngModel class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="imageUrl">Image URL</label>
+          <input type="text" id="imageUrl" name="imageUrl" #imageUrl="ngModel" ngModel class="form-control" [disabled]="imageUploading">
+        </div>
+        <p>Or upload an image:</p>
+        <div class="form-group" id="upload_button">
+          <label>
+            <input class="file" type="file" id="file" (change)="fileChangeEvent($event)" accept='image/*' [disabled]="submitted">
+            <span class="btn btn-outline-primary">
+              <i class="fa fa-upload" aria-hidden="true"></i> CHOOSE IMAGE</span>
+          </label>
+          <label [textContent]="fileName"></label>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit" [disabled]="submitted">
+          <i class="fa fa-comment-o" aria-hidden="true"></i> Submit Comment</button>
+        <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px" *ngIf="submitted"></i>
+      </form>
+    </div>
+  </div>
+</div>

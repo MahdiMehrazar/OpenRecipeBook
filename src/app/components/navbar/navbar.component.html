@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top">
+  <a class="navbar-brand" routerLink="/">
+    <img src="https://firebasestorage.googleapis.com/v0/b/openrecipebook.appspot.com/o/website%2Fbook.png?alt=media&token=a024e8e9-d2e5-4b75-8f05-4bea3fd031b6"
+      height="30" width="30">Open Recipe Book</a>
+  <button (click)="toggleCollapse()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse fadeInDown" [class.show]="show" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/" (click)="toggleCollapse()">
+          <i class="fa fa-home" aria-hidden="true"></i> Home</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/recipes" (click)="toggleCollapse()">
+          <i class="fa fa-cutlery" aria-hidden="true"></i> Recipes</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/users" (click)="toggleCollapse()">
+          <i class="fa fa-users" aria-hidden="true"></i> Users</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li *ngIf="isAuthenticated()" class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/profile" (click)="toggleCollapse()">
+          <i class="fa fa-user" aria-hidden="true"></i> Profile</a>
+      </li>
+      <li *ngIf="!isAuthenticated()" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/login" (click)="toggleCollapse()">
+          <i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+      </li>
+      <li *ngIf="!isAuthenticated()" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/register" (click)="toggleCollapse()">
+          <i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
+      </li>
+      <li *ngIf="isAuthenticated()" class="nav-item">
+        <a class="nav-link" (click)="onLogoutClick()" routerLink="" (click)="toggleCollapse()">
+          <i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>

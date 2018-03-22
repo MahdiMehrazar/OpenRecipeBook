@@ -1,0 +1,3 @@
+<div *ngIf="recipes">
+  <app-recipe-list *ngFor="let recipeEl of recipes; let i = index" [recipe]="recipeEl"></app-recipe-list>
+</div>

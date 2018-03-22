@@ -1,0 +1,3 @@
+<div *ngIf="userFavs">
+  <app-recipe-list *ngFor="let recipeEl of userFavs; let i = index" [recipe]="recipeEl"></app-recipe-list>
+</div>

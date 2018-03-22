@@ -1,0 +1,26 @@
+<div class="rating">
+
+  <div *ngIf="!isAuthenticated()">
+    <h6>You must be logged in to rate this recipe.</h6>
+  </div>
+
+  <div *ngIf="isAuthenticated()">
+
+    <div class="alert alert-success" *ngIf="success">
+      Rated recipe!
+    </div>
+
+    <form class="ratingForm form-group" (ngSubmit)="onSubmitRating(ratingForm)" #ratingForm="ngForm">
+      <span class="ratingHeader">Rate this recipe:</span>
+      <span class="fa fa-star userRating zoom" (click)="onClick(1)" [class.checked]="rating >= 1"></span>
+      <span class="fa fa-star userRating zoom" (click)="onClick(2)" [class.checked]="rating >= 2"></span>
+      <span class="fa fa-star userRating zoom" (click)="onClick(3)" [class.checked]="rating >= 3"></span>
+      <span class="fa fa-star userRating zoom" (click)="onClick(4)" [class.checked]="rating >= 4"></span>
+      <span class="fa fa-star userRating zoom" (click)="onClick(5)" [class.checked]="rating >= 5"></span>
+      <button class="btn btn-primary btn-sm ratingSubmitBtn" type="submit">
+        <i class="fa fa-hand-peace-o" aria-hidden="true"></i> Submit Rating</button>
+    </form>
+
+  </div>
+
+</div>

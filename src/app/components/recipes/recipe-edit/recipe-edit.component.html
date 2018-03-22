@@ -1,0 +1,52 @@
+<div *ngIf="recipe">
+  <h1>Edit Recipe</h1>
+  <br>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset=2">
+      <form (ngSubmit)="onEditRecipe(recipeForm)" #recipeForm="ngForm">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input required type="text" id="name" name="name" #name="ngModel" [ngModel]="recipe['name']" class="form-control">
+        </div>
+        <div class="alert alert-warning" *ngIf="!name.valid && name.touched">
+          Please enter a valid name.
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea required id="description" name="description" #description="ngModel" [ngModel]="recipe['description']" class="form-control"></textarea>
+        </div>
+        <div class="alert alert-warning" *ngIf="!description.valid && description.touched">
+          Please enter a description for the recipe.
+        </div>
+        <div class="form-group">
+          <label for="instructions">Instructions</label>
+          <textarea required id="instructions" name="instructions" #instructions="ngModel" [ngModel]="recipe['instructions']" class="form-control"></textarea>
+        </div>
+        <div class="alert alert-warning" *ngIf="!instructions.valid && instructions.touched">
+          Please enter instructions for the recipe.
+        </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <p class="font-weight-light font-italic">Split each tag with a comma. e.g. "spicy, seafood, healthy".</p>
+            <input type="text" id="tags" name="tags" #tags="ngModel" [ngModel]="recipe['tags']" class="form-control">
+          </div>
+        <div class="form-group">
+          <label for="imageUrl">Image URL</label>
+          <input type="text" id="imageUrl" name="imageUrl" #imageUrl="ngModel" [ngModel]="recipe['imageUrl']" class="form-control"
+            [disabled]="imageUploading">
+        </div>
+        <p>Or upload an image:</p>
+        <div class="form-group" id="upload_button">
+          <label>
+            <input class="file" type="file" id="file" (change)="fileChangeEvent($event)" accept='image/*' [disabled]="submitted">
+            <span class="btn btn-outline-primary"><i class="fa fa-upload" aria-hidden="true"></i> CHOOSE IMAGE</span>
+          </label>
+          <label [textContent]="fileName"></label>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit" [disabled]="!recipeForm.valid || submitted">Submit</button>
+        <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px" *ngIf="submitted"></i>
+      </form>
+    </div>
+  </div>
+</div>

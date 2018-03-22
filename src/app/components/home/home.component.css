@@ -1,0 +1,43 @@
+.bgimg-1 {
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/openrecipebook.appspot.com/o/website%2Fandy-chilton-56332-unsplash.jpg?alt=media&token=cf27782e-e908-4ff3-9eae-82d270f56768");
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  opacity: 0.65;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.caption .jumbotron {
+  font-family: "PT Serif", serif;
+  text-shadow: 2px 2px 4px #000000;
+  color: white;
+  background: rgba(255, 212, 93, 0.014);
+  position: absolute;
+  left: 0;
+  top: 20%;
+  width: 100%;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .jumbotron h1 {
+    font-size: 32px;
+  }
+  .jumbotron p {
+    font-size: 16px;
+  }
+}
+/* 
+body,
+html {
+  height: 100vh;
+  width: 100vw;
+  height: 100%;
+  margin: 0;
+} */
+

@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col">
+      <h2>Users</h2>
+    </div>
+  </div>
+  <div class="row align-items-center">
+    <div class="col">
+      <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
+    </div>
+    <div class="col">
+      <input class="searchBar float-right" [(ngModel)]="searchText" placeholder="Search">
+    </div>
+  </div>
+
+  <br>
+
+  <div class="container">
+    <div class="col">
+      <div *ngFor="let user of users | filter:searchText:'username' | paginate: {itemsPerPage: 10, currentPage: page }">
+        <a style="cursor: pointer" class="list-group-item list-group-item-action clearfix" [routerLink]="['/users', user.username]">{{ user.username }}</a>
+      </div>
+    </div>
+  </div>

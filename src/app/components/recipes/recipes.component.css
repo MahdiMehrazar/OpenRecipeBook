@@ -1,0 +1,27 @@
+@media screen and (max-width: 768px) {
+  .searchBar {
+    display: none;
+  }
+  .mobileSearchIcon {
+    display: initial;
+  }
+  body {
+    overflow-x: hidden !important;
+  }
+  .container {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .searchBar {
+    display: initial;
+  }
+  .mobileSearchIcon {
+    display: none;
+  }
+  .mobileSearchBar {
+    display: none;
+  }
+}

@@ -1,0 +1,219 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Work+Sans");
+
+body {
+  font-family: "Work Sans", sans-serif;
+  background-color: rgb(252, 244, 210);
+}
+h2 {
+  text-align: center;
+  font-size: 52px;
+  margin-top: 20px;
+}
+
+.checked {
+  color: orange;
+}
+
+#upload_button {
+  display: inline-block;
+}
+#upload_button input[type="file"] {
+  display: none;
+}
+
+/* 
+.searchBar {
+  right: 10px;
+  top: 50px;
+  z-index: 99;
+  margin-top: 40px;
+  position: fixed;
+  float: right;
+} */
+
+.closeSearchBtn {
+  float: right;
+  color: rgb(100, 87, 69);
+}
+
+.mobileSearchBar {
+  padding: 5px 5px 5px 5px;
+  border-radius: 5px;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.mobileSearchIcon {
+  /* top: 120px;
+  right: 30px;
+  margin-bottom: 20px;
+  z-index: 99;
+  position: absolute;
+  float: right; */
+  color: rgb(100, 87, 69);
+  transition: transform 0.2s;
+}
+
+.mobileSearchIcon:hover {
+  transform: scale(1.1);
+}
+
+.clearfix {
+  overflow: auto;
+}
+
+button {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.nav-tabs {
+  margin-top: 10px;
+}
+
+.fa-spin {
+  color: rgb(0, 153, 255);
+}
+
+.list-group {
+  margin-bottom: 20px;
+}
+
+.list-group-item {
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #edb858;
+  border-color: #9c7a3a;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #a06417;
+  border-color: #9c7a3a;
+}
+
+.btn-primary:disabled {
+  color: #fff;
+  background-color: #b4b4b4;
+  border-color: #838383;
+}
+
+.btn-outline-secondary:not(:disabled):not(.disabled).active {
+  color: #fff;
+  background-color: #a06417;
+  border-color: #9c7a3a;
+}
+
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: #a06417;
+  border-color: #9c7a3a;
+}
+
+.alert-warning {
+  color: #855104;
+  background-color: #ff4040;
+  border-color: #b96868;
+}
+
+.centerImage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.zoom {
+  transition: transform 0.2s;
+}
+
+.zoom:hover {
+  transform: scale(1.2);
+}
+
+.ngx-pagination {
+  padding-left: 0px;
+  /* width: 400px; */
+}
+
+.pagination a {
+  text-decoration: none;
+}
+
+.pagination .ngx-pagination .current {
+  background-color: #a06417;
+}
+
+.pagination .ngx-pagination a:hover {
+  background-color: #f7e5ca;
+}
+
+.pagination-next,
+.pagination-previous {
+  text-align: center;
+  font-size: 16px;
+  width: 140px;
+  transition: padding 0.5s;
+  cursor: pointer;
+}
+
+.pagination-next:after,
+.pagination-previous:after {
+  opacity: 0;
+  top: 0;
+  transition: 0.5s;
+}
+
+.pagination-next a:focus,
+.pagination-previous a:focus {
+  outline: none !important;
+}
+
+.pagination-next:hover {
+  padding-left: 25px;
+}
+
+.pagination-previous:hover {
+  padding-right: 25px;
+}
+
+@-webkit-keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -50%, 0);
+    transform: translate3d(0, -50%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -50%, 0);
+    transform: translate3d(0, -50%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+}
+
+.btn {
+  border: 0px;
+}

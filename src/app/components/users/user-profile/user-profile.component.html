@@ -1,0 +1,9 @@
+<div *ngIf="userProfile">
+  <h2>{{userProfile.username}}'s profile</h2>
+</div>
+
+<button class="btn btn-danger" (click)="adminDeleteUser()" *ngIf="adminCheck()">
+  Delete User</button>
+
+<h2>Recipes:</h2>
+<app-recipe-list *ngFor="let recipeEl of recipes; let i = index" [recipe]="recipeEl"></app-recipe-list>

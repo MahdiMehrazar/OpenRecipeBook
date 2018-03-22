@@ -1,0 +1,118 @@
+<div *ngIf="recipe">
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h4>
+          {{ recipe.name }}
+        </h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="stars">
+          <span class="fa fa-star" [class.checked]="roundedAvgRating >= 1"></span>
+          <span class="fa fa-star" [class.checked]="roundedAvgRating >= 2"></span>
+          <span class="fa fa-star" [class.checked]="roundedAvgRating >= 3"></span>
+          <span class="fa fa-star" [class.checked]="roundedAvgRating >= 4"></span>
+          <span class="fa fa-star" [class.checked]="roundedAvgRating >= 5"></span>
+        </div>
+
+        <button class="btn btn-primary" routerLink="edit" *ngIf="recipeOwnership()" [disabled]="submitted">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Recipe</button>
+
+        <button class="btn btn-danger" (click)="deleteConfirmationNotice = true" *ngIf="recipeOwnership()" [disabled]="submitted">
+          <i class="fa fa-trash" aria-hidden="true"></i> Delete Recipe</button>
+
+      </div>
+      <div class="col">
+        <div *ngIf="isAuthenticated()" class="favouriteBtn btn btn-outline zoom float-right" (click)="favourite()" [ngClass]="favStatus ? 'favd' : 'notfavd'">
+          <span class="fa fa-heart favourite"></span>
+          <h6 *ngIf="!favStatus">Favourite</h6>
+          <h6 *ngIf="favStatus">Unfavourite</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="alert alert-warning" *ngIf="deleteConfirmationNotice">
+    <p>Are you sure you want to delete this recipe?</p>
+    <button class="btn btn-danger" (click)="deleteRecipe()" *ngIf="recipeOwnership()" [disabled]="submitted">
+      Delete</button>
+    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px" *ngIf="submitted"></i>
+    <button class="btn" (click)="deleteConfirmationNotice = false" *ngIf="recipeOwnership()" [disabled]="submitted">
+      Cancel</button>
+  </div>
+
+
+  <img src="{{ recipe.imageUrl }}" alt="{{ recipe.name }}" class="img-fluid centerImage" style="max-height: 600px;">
+  <div class="share">
+    <button class="btn btn-link zoom" shareButton="facebook" [style.color]="share.prop.facebook.color">
+      <i [class]="share.prop.facebook.icon"></i>
+      <p>Share</p>
+    </button>
+    <button class="btn btn-link zoom" shareButton="twitter" [style.color]="share.prop.twitter.color">
+      <i [class]="share.prop.twitter.icon"></i>
+      <p>Tweet</p>
+    </button>
+    <button class="btn btn-link zoom" shareButton="whatsapp" [style.color]="share.prop.whatsapp.color">
+      <i [class]="share.prop.whatsapp.icon"></i>
+      <p>Whatsapp</p>
+    </button>
+    <button class="btn btn-link zoom" shareButton="telegram" [style.color]="share.prop.telegram.color">
+      <i [class]="share.prop.telegram.icon"></i>
+      <p>Telegram</p>
+    </button>
+    <button class="btn btn-link zoom" shareButton="pinterest" [style.color]="share.prop.pinterest.color">
+      <i [class]="share.prop.pinterest.icon"></i>
+      <p>Pinterest</p>
+    </button>
+    <button class="btn btn-link zoom" shareButton="copy" [style.color]="share.prop.copy.color" (click)="linkCopied()">
+      <i [class]="share.prop.copy.icon"></i>
+      <p *ngIf="!linkCopy">Copy Link</p>
+      <p *ngIf="linkCopy">Copied link!</p>
+    </button>
+    <button class="btn btn-link zoom" shareButton="email" [style.color]="share.prop.email.color">
+      <i [class]="share.prop.email.icon"></i>
+      <p>Email</p>
+    </button>
+    <button class="btn btn-link zoom" shareButton="print" [style.color]="share.prop.print.color">
+      <i [class]="share.prop.print.icon"></i>
+      <p>Print</p>
+    </button>
+  </div>
+
+
+  <h5>
+    <p>Submitted By:
+      <a style="cursor: pointer" [routerLink]="['/users', recipe.author.username]">{{ recipe.author.username }}</a>
+    </p>
+  </h5>
+
+  <div class="container">
+    <h4>Description:</h4>
+    <p> {{ recipe.description }}
+    </p>
+  </div>
+
+  <div class="container">
+    <h4>Instructions:</h4>
+    <p>{{ recipe.instructions }}
+    </p>
+  </div>
+
+  <div>
+    <h6>Tags:</h6>
+    <span class="m-1 px-1 customBorder rounded" *ngFor="let tag of recipe.tags">{{ tag }}</span>
+  </div>
+
+  <app-recipe-rating [recipe]="recipe"></app-recipe-rating>
+
+
+</div>
+
+
+<app-comments [recipe]="recipe"></app-comments>

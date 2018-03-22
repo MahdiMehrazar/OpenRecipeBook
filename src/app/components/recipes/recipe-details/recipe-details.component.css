@@ -1,0 +1,71 @@
+h5 {
+  margin-top: 10px;
+}
+
+img {
+  margin-top: 10px;
+}
+
+div.stars {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+span.favourite {
+  cursor: pointer;
+}
+
+.favd {
+  color: rgb(230, 65, 65);
+  background-color: rgba(255, 182, 25, 0.61);
+}
+
+.notfavd {
+  color: rgb(255, 255, 255);
+  background-color: rgba(255, 182, 25, 0.61);
+}
+
+/* .favouriteBtn {
+  margin-bottom: 50px;
+  z-index: 99;
+  position: relative;
+  margin-right: 50px;
+  float: right;
+} */
+
+.share {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  max-width: 800px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.share p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+}
+
+.share button {
+  width: 90px;
+}
+
+.share button:hover{
+  text-decoration: none;
+}
+
+i {
+  font-size: 1.5em;
+}
+
+.badge {
+  padding-top: 10px;
+  margin-top: 5px;
+  height: 2.5em;
+}
+
+.customBorder{
+  border: 2px solid rgba(197, 138, 56, 0.308);
+}

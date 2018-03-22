@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col">
+            <h2>Recipes</h2>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col">
+            <pagination-controls class="pagination" (pageChange)="page = $event; pageChanged(page)"></pagination-controls>
+        </div>
+
+        <form (submit)="search(searchType)">
+            <div class="form-group">
+                <div class="searchBar">
+                    <button type="button" class="btn btn-outline-secondary btn-sm form-control-inline" (click)="searchType = 'name'" [ngClass]="{'active': searchType == 'name'}">Name</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm form-control-inline" (click)="searchType = 'tags'" [ngClass]="{'active': searchType == 'tags'}">Tags</button>
+                    <input name="searchText" class="form-control" [(ngModel)]="searchText" placeholder="Search by {{searchType}}">
+                    <button name="search" class="btn btn-primary form-control" type="submit" (click)="search(searchType)">
+                        <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row  justify-content-end">
+        <div class="col-4">
+            <button type="button" class="btn btn-primary" routerLink="new" *ngIf="isAuthenticated()">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> New Recipe</button>
+        </div>
+        <div class="col">
+            <div class="mobileSearchIcon  float-right" *ngIf="!mobileSearch">
+                <a style="cursor: pointer" (click)="showSearchBar()">
+                    <i class="fa fa-search fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form (submit)="search(searchType)">
+    <div class="form-group">
+        <div class="mobileSearchBar fadeInDown" *ngIf="mobileSearch">
+            <button type="button" class="btn btn-outline-secondary btn-sm form-control-inline" (click)="searchType = 'name'" [ngClass]="{'active': searchType == 'name'}">Name</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm form-control-inline" (click)="searchType = 'tags'" [ngClass]="{'active': searchType == 'tags'}">Tags</button>
+            <span class="closeSearchBtn">
+                <a style="cursor: pointer" (click)="showSearchBar()">
+                    <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+                </a>
+            </span>
+            <input name="searchText" class="form-control" [(ngModel)]="searchText" placeholder="Search by {{searchType}}">
+            <button name="search" class="btn btn-primary form-control" type="submit" (click)="search(searchType)">
+                <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+        </div>
+    </div>
+</form>
+
+
+<div class="container">
+    <div class="row">
+        <app-recipe-list class="col-lg-6 col-md-6" *ngFor="let recipeEl of recipes | paginate: {itemsPerPage: 10, currentPage: page, totalItems: total }"
+            [recipe]="recipeEl"></app-recipe-list>
+    </div>
+</div>
