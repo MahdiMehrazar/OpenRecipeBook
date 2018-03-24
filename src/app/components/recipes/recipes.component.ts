@@ -30,22 +30,24 @@ export class RecipesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subscriptions.add(this.recipeService.getRecipes(this.page).subscribe(
-      data => {
-        this.recipes = data["recipes"];
-        this.total = data["total"];
-      },
-      error => {
-        console.log(error);
-      }
-    ));
+    this.subscriptions.add(
+      this.recipeService.getRecipes(this.page).subscribe(
+        data => {
+          this.recipes = data["recipes"];
+          this.total = data["total"];
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    );
   }
 
-  ngOnDestroy () {
-    this.subscriptions.unsubscribe()
-  }  
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 
-  showSearchBar(){
+  showSearchBar() {
     this.mobileSearch = !this.mobileSearch;
   }
 
@@ -56,53 +58,61 @@ export class RecipesComponent implements OnInit, OnDestroy {
   pageChanged(page) {
     this.page = page;
     if (!this.searchMode) {
-      this.subscriptions.add(this.recipeService.getRecipes(this.page).subscribe(
-        data => {
-          this.recipes = data["recipes"];
-          this.total = data["total"];
-        },
-        error => {
-          console.log(error);
-        }
-      ));
+      this.subscriptions.add(
+        this.recipeService.getRecipes(this.page).subscribe(
+          data => {
+            this.recipes = data["recipes"];
+            this.total = data["total"];
+          },
+          error => {
+            console.log(error);
+          }
+        )
+      );
     }
   }
 
   search(searchType) {
     if (!this.searchText) {
-      this.subscriptions.add(this.recipeService.getRecipes(this.page).subscribe(
-        data => {
-          this.recipes = data["recipes"];
-          this.total = data["total"];
-        },
-        error => {
-          console.log(error);
-        }
-      ));
+      this.subscriptions.add(
+        this.recipeService.getRecipes(this.page).subscribe(
+          data => {
+            this.recipes = data["recipes"];
+            this.total = data["total"];
+          },
+          error => {
+            console.log(error);
+          }
+        )
+      );
     } else {
       this.searchMode = true;
       if (searchType == "name") {
-        this.subscriptions.add(this.recipeService.getRecipesByName(this.searchText).subscribe(
-          data => {
-            this.page = 1;
-            this.total = data["total"];
-            this.recipes = data["recipes"];
-          },
-          error => {
-            console.log(error);
-          }
-        ));
+        this.subscriptions.add(
+          this.recipeService.getRecipesByName(this.searchText).subscribe(
+            data => {
+              this.page = 1;
+              this.total = data["total"];
+              this.recipes = data["recipes"];
+            },
+            error => {
+              console.log(error);
+            }
+          )
+        );
       } else {
-        this.subscriptions.add(this.recipeService.getRecipesByTags(this.searchText).subscribe(
-          data => {
-            this.page = 1;
-            this.total = data["total"];
-            this.recipes = data["recipes"];
-          },
-          error => {
-            console.log(error);
-          }
-        ));
+        this.subscriptions.add(
+          this.recipeService.getRecipesByTags(this.searchText).subscribe(
+            data => {
+              this.page = 1;
+              this.total = data["total"];
+              this.recipes = data["recipes"];
+            },
+            error => {
+              console.log(error);
+            }
+          )
+        );
       }
     }
   }

@@ -32,16 +32,6 @@ h2 {
   color: black !important;
 }
 
-/* 
-.searchBar {
-  right: 10px;
-  top: 50px;
-  z-index: 99;
-  margin-top: 40px;
-  position: fixed;
-  float: right;
-} */
-
 .closeSearchBtn {
   float: right;
   color: rgb(100, 87, 69);
@@ -57,12 +47,6 @@ h2 {
 }
 
 .mobileSearchIcon {
-  /* top: 120px;
-  right: 30px;
-  margin-bottom: 20px;
-  z-index: 99;
-  position: absolute;
-  float: right; */
   color: rgb(100, 87, 69);
   transition: transform 0.2s;
 }
@@ -147,7 +131,6 @@ button {
 
 .ngx-pagination {
   padding-left: 0px;
-  /* width: 400px; */
 }
 
 .pagination a {

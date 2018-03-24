@@ -1,24 +1,55 @@
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col">
-      <h2>Users</h2>
-    </div>
+<div class="row justify-content-center">
+  <div class="col">
+    <h2>Users</h2>
   </div>
-  <div class="row align-items-center">
-    <div class="col">
-      <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
-    </div>
-    <div class="col">
-      <input class="searchBar float-right" [(ngModel)]="searchText" placeholder="Search">
-    </div>
+</div>
+<div class="row align-items-center">
+  <div class="col">
+    <pagination-controls class="pagination" (pageChange)="page = $event; pageChanged(page)"></pagination-controls>
   </div>
-
-  <br>
-
-  <div class="container">
-    <div class="col">
-      <div *ngFor="let user of users | filter:searchText:'username' | paginate: {itemsPerPage: 10, currentPage: page }">
-        <a style="cursor: pointer" class="list-group-item list-group-item-action clearfix" [routerLink]="['/users', user.username]">{{ user.username }}</a>
+  <!-- <input class="searchBar float-right" [(ngModel)]="searchText" placeholder="Search"> -->
+  <form (submit)="search()">
+    <div class="form-group">
+      <div class="searchBar">
+        <input name="searchText" class="form-control" [(ngModel)]="searchText" placeholder="Search">
+        <button name="search" class="btn btn-primary form-control" type="submit">
+          <i class="fa fa-search" aria-hidden="true"></i> Search</button>
       </div>
     </div>
+  </form>
+</div>
+<div class="row justify-content-end">
+  <div class="col">
+    <div class="mobileSearchIcon float-right" *ngIf="!mobileSearch">
+      <a style="cursor: pointer" (click)="showSearchBar()">
+        <i class="fa fa-search fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
   </div>
+</div>
+
+
+<form (submit)="search()">
+  <div class="form-group">
+    <div class="mobileSearchBar fadeInDown" *ngIf="mobileSearch">
+      <span class="closeSearchBtn">
+        <a style="cursor: pointer" (click)="showSearchBar()">
+          <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+        </a>
+      </span>
+      <input name="searchText" class="form-control" [(ngModel)]="searchText" placeholder="Search">
+      <button name="search" class="btn btn-primary form-control" type="submit">
+        <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+    </div>
+  </div>
+</form>
+
+<br>
+
+<div class="container">
+  <div class="col-lg-12 list-group">
+    <div *ngFor="let user of users | paginate: {itemsPerPage: 10, currentPage: page, totalItems: total  }">
+      <a style="cursor: pointer" class="list-group-item list-group-item-action clearfix" [routerLink]="['/users', user.username]">{{ user.username }}</a>
+    </div>
+  </div>
+</div>

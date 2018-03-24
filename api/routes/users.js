@@ -11,24 +11,31 @@ const Comment = require("../models/comment");
 
 // All Users
 router.get("/", (req, res) => {
-  User.find({'role': {'$ne':'admin' }}, (err, allUsers) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json({ users: allUsers });
-    }
-  });
+  User.find({ role: { $ne: "admin" } })
+    .limit(10)
+    .skip(10 * req.query.currentPage - 10)
+    .exec((err, allUsers) => {
+      if (err) {
+        console.log(err);
+      } else {
+        User.count((err, total) => {
+          res.json({ users: allUsers, total });
+        });
+      }
+    });
 });
 
 //SHOW profile of one user
 router.get("/profile/:username", (req, res) => {
-  User.findOne({ username: req.params["username"] }).populate("favouriteRecipes").exec((err, foundUser) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json({ user: foundUser });
-    }
-  });
+  User.findOne({ username: req.params["username"] })
+    .populate("favouriteRecipes")
+    .exec((err, foundUser) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json({ user: foundUser });
+      }
+    });
 });
 
 // Register

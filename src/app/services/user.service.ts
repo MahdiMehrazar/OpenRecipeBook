@@ -17,12 +17,20 @@ export class UserService {
     private userAuthService: UserAuthService
   ) {}
 
-  getAllUsers() {
-    return this.http.get(environment.baseUrl + "api/users");
+  getAllUsers(currentPage) {
+    const options = {
+      params: new HttpParams().set("currentPage", currentPage)
+    };
+    return this.http.get(environment.baseUrl + "api/users", options);
   }
 
   getUser(username) {
     return this.http.get(environment.baseUrl + "api/users/profile/" + username);
   }
 
+  getUsersByUsername(username) {
+    return this.http.get(
+      environment.baseUrl + "api/search/users/name/" + username
+    );
+  }
 }

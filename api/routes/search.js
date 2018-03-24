@@ -27,6 +27,24 @@ router.get("/recipes/name/:name", (req, res) => {
   );
 });
 
+//READ users by searching username
+router.get("/users/name/:username", (req, res) => {
+  User.find({ username: { $regex: req.params.username, $options: "i" } }).exec(
+    (err, allUsers) => {
+      if (err) {
+        console.log(err);
+      } else {
+        User.count(
+          { username: { $regex: req.params.username, $options: "i" } },
+          (err, total) => {
+            res.json({ users: allUsers, total });
+          }
+        );
+      }
+    }
+  );
+});
+
 //READ recipes by searching tags
 router.get("/recipes/tags/:tags", (req, res) => {
   //split tags into array
