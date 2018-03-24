@@ -1,15 +1,17 @@
 import { RecipeService } from "./../../../services/recipe.service";
 import { UserAuthService } from "./../../../services/userauth.service";
-import { Component, OnInit, Input, Output } from "@angular/core";
+import { Component, OnInit, Input, Output, OnDestroy } from "@angular/core";
 import { CommentService } from "../../../services/comment.service";
 import { FileuploadService } from "../../../services/fileupload.service";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: "app-comment",
   templateUrl: "./comment.component.html",
   styleUrls: ["./comment.component.css"]
 })
-export class CommentComponent implements OnInit {
+export class CommentComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   @Input() comment: Object;
   @Input() recipe: Object;
   user: Object;
@@ -33,6 +35,10 @@ export class CommentComponent implements OnInit {
   ngOnInit() {
     this.user = this.userAuthService.getUserInfo();
   }
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
+  }  
 
   commentOwnership() {
     if (this.user) {
@@ -65,7 +71,7 @@ export class CommentComponent implements OnInit {
   }
 
   submitFormWithImageURL(comment) {
-    this.commentService
+    this.subscriptions.add(this.commentService
       .editComment(this.recipe["recipeId"], this.comment["_id"], comment)
       .subscribe((data: any) => {
         if (data.success) {
@@ -80,7 +86,7 @@ export class CommentComponent implements OnInit {
           this.editMode = false;
           this.submitted = false;
         }
-      });
+      }));
   }
 
   submitFormWithImageUpload(comment) {
@@ -91,7 +97,7 @@ export class CommentComponent implements OnInit {
       formData.append("file", files[i], files[i]["name"]);
     }
 
-    this.fileUploadService.postRecipeImage(formData).subscribe(data => {
+    this.subscriptions.add(this.fileUploadService.postRecipeImage(formData).subscribe(data => {
       comment.imageUrl = data["data"];
       this.commentService
         .editComment(this.recipe["recipeId"], this.comment["_id"], comment)
@@ -109,13 +115,13 @@ export class CommentComponent implements OnInit {
             this.submitted = false;
           }
         });
-    });
+    }));
   }
 
   deleteComment() {
     this.submitted = true;
 
-    this.commentService
+    this.subscriptions.add(this.commentService
       .deleteComment(this.recipe["recipeId"], this.comment["_id"])
       .subscribe((data: any) => {
         if (data.success) {
@@ -125,7 +131,7 @@ export class CommentComponent implements OnInit {
           this.submitted = false;
           this.commentService.announceCommentDeletion(false);
         }
-      });
+      }));
   }
 
   fileChangeEvent(fileInput: any) {

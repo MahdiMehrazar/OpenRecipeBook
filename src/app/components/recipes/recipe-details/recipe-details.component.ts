@@ -1,17 +1,19 @@
 import { UserService } from "./../../../services/user.service";
 import { FlashMessagesService } from "angular2-flash-messages";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { RecipeService } from "../../../services/recipe.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { UserAuthService } from "../../../services/userauth.service";
 import { ShareButtons } from '@ngx-share/core';
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: "app-recipe-details",
   templateUrl: "./recipe-details.component.html",
   styleUrls: ["./recipe-details.component.css"]
 })
-export class RecipeDetailsComponent implements OnInit {
+export class RecipeDetailsComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   recipe: Object;
   params: Params;
   id: number;
@@ -46,7 +48,7 @@ export class RecipeDetailsComponent implements OnInit {
   ngOnInit() {
     this.user = this.userAuthService.getUserInfo();
 
-    this.recipeService.getRecipeById(this.id).subscribe(
+    this.subscriptions.add(this.recipeService.getRecipeById(this.id).subscribe(
       data => {
         this.recipe = data["recipe"];
         // console.log(this.recipe);
@@ -54,9 +56,9 @@ export class RecipeDetailsComponent implements OnInit {
       error => {
         console.log(error);
       }
-    );
+    ));
 
-    this.recipeService
+    this.subscriptions.add(this.recipeService
       .getRecipeAvgRatingById(this.id)
       .subscribe((data: any) => {
         for (var key in data["avgRating"]) {
@@ -65,10 +67,10 @@ export class RecipeDetailsComponent implements OnInit {
             this.roundedAvgRating = Math.round(this.avgRating);
           }
         }
-      });
+      }));
 
     if (this.user) {
-      this.userService.getUser(this.user["username"]).subscribe(
+      this.subscriptions.add(this.userService.getUser(this.user["username"]).subscribe(
         (data: any) => {
           this.userFavs = data["user"]["favouriteRecipes"];
           for (var key in this.userFavs) {
@@ -80,9 +82,13 @@ export class RecipeDetailsComponent implements OnInit {
         error => {
           console.log(error);
         }
-      );
+      ));
     }
   }
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
+  }  
 
   recipeOwnership() {
     if (this.user) {
@@ -97,7 +103,7 @@ export class RecipeDetailsComponent implements OnInit {
   deleteRecipe() {
     this.submitted = true;
 
-    this.recipeService.deleteRecipe(this.id).subscribe((data: any) => {
+    this.subscriptions.add(this.recipeService.deleteRecipe(this.id).subscribe((data: any) => {
       if (data.success) {
         this.submitted = false;
         this.flashMessagesService.show("Recipe deleted!", {
@@ -113,12 +119,12 @@ export class RecipeDetailsComponent implements OnInit {
         });
         this.router.navigate(["/recipes/"]);
       }
-    });
+    }));
   }
 
   favourite() {
     if (!this.favStatus) {
-      this.recipeService
+      this.subscriptions.add(this.recipeService
         .favouriteRecipe(this.id, this.recipe)
         .subscribe((data: any) => {
           if (data.success) {
@@ -130,9 +136,9 @@ export class RecipeDetailsComponent implements OnInit {
           } else {
             this.success = false;
           }
-        });
+        }));
     } else {
-      this.recipeService
+      this.subscriptions.add(this.recipeService
         .unFavouriteRecipe(this.id, this.recipe)
         .subscribe((data: any) => {
           if (data.success) {
@@ -144,7 +150,7 @@ export class RecipeDetailsComponent implements OnInit {
           } else {
             this.success = false;
           }
-        });
+        }));
     }
   }
 

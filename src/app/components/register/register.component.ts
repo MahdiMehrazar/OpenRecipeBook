@@ -1,15 +1,17 @@
 import { ValidateService } from './../../services/validate.service';
 import { UserAuthService } from "./../../services/userauth.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { FlashMessagesService } from "angular2-flash-messages";
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
   styleUrls: ["./register.component.css"]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   username: String;
   email: String;
   password: String;
@@ -24,6 +26,10 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
+  } 
 
   onSignup(form) {
     const user = {
@@ -44,7 +50,7 @@ export class RegisterComponent implements OnInit {
     }
 
     // Register User
-    this.authService.registerUser(user).subscribe((data: any) => {
+    this.subscriptions.add(this.authService.registerUser(user).subscribe((data: any) => {
       if (data.success) {
         this.flashMessagesService.show(
           "Registration successful! You can now log in.",
@@ -60,6 +66,6 @@ export class RegisterComponent implements OnInit {
         this.submitted = false;
         this.router.navigate(["/register"]);
       }
-    });
+    }));
   }
 }

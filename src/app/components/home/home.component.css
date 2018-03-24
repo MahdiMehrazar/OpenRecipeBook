@@ -24,6 +24,18 @@
   text-align: center;
 }
 
+.mytext {
+  position:absolute;
+  bottom:0;
+  right:0;
+  opacity: 1;
+  font-size: 18px;
+  font-family: "PT Serif", serif;
+  text-shadow: 2px 2px 4px #000000;
+  color: white;
+  background: rgba(255, 212, 93, 0.014);
+}
+
 @media screen and (max-width: 768px) {
   .jumbotron h1 {
     font-size: 32px;

@@ -1,14 +1,17 @@
 import { UserAuthService } from "./../../services/userauth.service";
 import { RecipeService } from "./../../services/recipe.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: "app-recipes",
   templateUrl: "./recipes.component.html",
   styleUrls: ["./recipes.component.css"]
 })
-export class RecipesComponent implements OnInit {
+export class RecipesComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
+
   recipes = [];
 
   searchMode;
@@ -27,7 +30,7 @@ export class RecipesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.recipeService.getRecipes(this.page).subscribe(
+    this.subscriptions.add(this.recipeService.getRecipes(this.page).subscribe(
       data => {
         this.recipes = data["recipes"];
         this.total = data["total"];
@@ -35,8 +38,12 @@ export class RecipesComponent implements OnInit {
       error => {
         console.log(error);
       }
-    );
+    ));
   }
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
+  }  
 
   showSearchBar(){
     this.mobileSearch = !this.mobileSearch;
@@ -49,7 +56,7 @@ export class RecipesComponent implements OnInit {
   pageChanged(page) {
     this.page = page;
     if (!this.searchMode) {
-      this.recipeService.getRecipes(this.page).subscribe(
+      this.subscriptions.add(this.recipeService.getRecipes(this.page).subscribe(
         data => {
           this.recipes = data["recipes"];
           this.total = data["total"];
@@ -57,13 +64,13 @@ export class RecipesComponent implements OnInit {
         error => {
           console.log(error);
         }
-      );
+      ));
     }
   }
 
   search(searchType) {
     if (!this.searchText) {
-      this.recipeService.getRecipes(this.page).subscribe(
+      this.subscriptions.add(this.recipeService.getRecipes(this.page).subscribe(
         data => {
           this.recipes = data["recipes"];
           this.total = data["total"];
@@ -71,11 +78,11 @@ export class RecipesComponent implements OnInit {
         error => {
           console.log(error);
         }
-      );
+      ));
     } else {
       this.searchMode = true;
       if (searchType == "name") {
-        this.recipeService.getRecipesByName(this.searchText).subscribe(
+        this.subscriptions.add(this.recipeService.getRecipesByName(this.searchText).subscribe(
           data => {
             this.page = 1;
             this.total = data["total"];
@@ -84,9 +91,9 @@ export class RecipesComponent implements OnInit {
           error => {
             console.log(error);
           }
-        );
+        ));
       } else {
-        this.recipeService.getRecipesByTags(this.searchText).subscribe(
+        this.subscriptions.add(this.recipeService.getRecipesByTags(this.searchText).subscribe(
           data => {
             this.page = 1;
             this.total = data["total"];
@@ -95,7 +102,7 @@ export class RecipesComponent implements OnInit {
           error => {
             console.log(error);
           }
-        );
+        ));
       }
     }
   }

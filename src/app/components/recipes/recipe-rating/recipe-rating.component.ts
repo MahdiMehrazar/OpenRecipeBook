@@ -1,15 +1,17 @@
 import { UserAuthService } from "./../../../services/userauth.service";
 import { FlashMessagesService } from "angular2-flash-messages";
 import { RecipeService } from "./../../../services/recipe.service";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { Params, ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: "app-recipe-rating",
   templateUrl: "./recipe-rating.component.html",
   styleUrls: ["./recipe-rating.component.css"]
 })
-export class RecipeRatingComponent implements OnInit {
+export class RecipeRatingComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   rating = 0;
   avgRating;
   roundedAvgRating;
@@ -40,7 +42,7 @@ export class RecipeRatingComponent implements OnInit {
       }
     }
 
-    this.recipeService
+    this.subscriptions.add(this.recipeService
       .getRecipeAvgRatingById(this.id)
       .subscribe((data: any) => {
         for (var key in data["avgRating"]) {
@@ -49,8 +51,12 @@ export class RecipeRatingComponent implements OnInit {
             this.roundedAvgRating = Math.round(this.avgRating);
           }
         }
-      });
+      }));
   }
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
+  }  
 
   isAuthenticated() {
     return this.userAuthService.isAuthenticated();
@@ -65,7 +71,7 @@ export class RecipeRatingComponent implements OnInit {
       rating: this.rating
     };
 
-    this.recipeService.rateRecipe(this.id, rating).subscribe((data: any) => {
+    this.subscriptions.add(this.recipeService.rateRecipe(this.id, rating).subscribe((data: any) => {
       if (data.success) {
         this.success = true;
         setTimeout(() => {
@@ -74,6 +80,6 @@ export class RecipeRatingComponent implements OnInit {
       } else {
         this.success = false;
       }
-    });
+    }));
   }
 }

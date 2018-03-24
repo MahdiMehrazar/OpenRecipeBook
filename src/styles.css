@@ -10,7 +10,13 @@ h2 {
   font-size: 52px;
   margin-top: 20px;
 }
+.alert {
+  border: 0px;
+}
 
+.btn {
+  border: 0px;
+}
 .checked {
   color: orange;
 }
@@ -20,6 +26,10 @@ h2 {
 }
 #upload_button input[type="file"] {
   display: none;
+}
+
+.alert-warning {
+  color: black !important;
 }
 
 /* 
@@ -181,6 +191,14 @@ button {
   padding-right: 25px;
 }
 
+.ngx-editor {
+  background-color: transparent !important;
+}
+
+.ngx-toolbar {
+  background-color: transparent !important;
+}
+
 @-webkit-keyframes fadeInDown {
   from {
     opacity: 0;
@@ -212,8 +230,4 @@ button {
 .fadeInDown {
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;
-}
-
-.btn {
-  border: 0px;
 }

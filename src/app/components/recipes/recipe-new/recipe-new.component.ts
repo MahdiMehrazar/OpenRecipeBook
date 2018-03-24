@@ -1,21 +1,24 @@
 import { FileuploadService } from "./../../../services/fileupload.service";
 import { RecipeService } from "./../../../services/recipe.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { FlashMessagesService } from "angular2-flash-messages";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: "app-recipe-new",
   templateUrl: "./recipe-new.component.html",
   styleUrls: ["./recipe-new.component.css"]
 })
-export class RecipeNewComponent implements OnInit {
+export class RecipeNewComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   name: String;
   instructions: String;
   description: String;
   imageUrl: String;
   user: any;
   fileName: String;
+  htmlContent;
 
   filesToUpload: Array<File> = [];
 
@@ -29,14 +32,63 @@ export class RecipeNewComponent implements OnInit {
     private fileUploadService: FileuploadService
   ) {}
 
+  editorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: "300px",
+    minHeight: "0",
+    width: "auto",
+    minWidth: "0",
+    translate: "yes",
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: "Enter instructions here",
+    imageEndPoint: "",
+    toolbar: [
+      [
+        "bold",
+        "italic",
+        "underline",
+        "superscript",
+        "subscript"
+      ],
+      ["fontSize"],
+      [
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+        "indent",
+        "outdent"
+      ],
+      ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
+      [
+        "paragraph",
+        "blockquote",
+        "removeBlockquote",
+        "horizontalLine",
+        "orderedList",
+        "unorderedList"
+      ],
+      ["link", "unlink", "video"]
+    ]
+  };
+
   ngOnInit() {}
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
+  }  
 
   onSubmitRecipe(form) {
     //split tags into array
-    var tags = form.value.tags.split(",").filter(e => {
-      return typeof e === "string" && e.length > 2;
-    }).map(string => string.trim());
-    
+    var tags = form.value.tags
+      .split(",")
+      .filter(e => {
+        return typeof e === "string" && e.length > 2;
+      })
+      .map(string => string.trim());
+
     const recipe = {
       name: form.value.name,
       instructions: form.value.instructions,
@@ -55,7 +107,7 @@ export class RecipeNewComponent implements OnInit {
   }
 
   submitFormWithImageURL(recipe) {
-    this.recipeService.newRecipe(recipe).subscribe((data: any) => {
+    this.subscriptions.add(this.recipeService.newRecipe(recipe).subscribe((data: any) => {
       if (data.success) {
         this.flashMessagesService.show("Recipe submitted!", {
           cssClass: "alert-success",
@@ -71,7 +123,7 @@ export class RecipeNewComponent implements OnInit {
         this.submitted = false;
         this.router.navigate(["/recipes"]);
       }
-    });
+    }));
   }
 
   submitFormWithImageUpload(recipe) {
@@ -82,7 +134,7 @@ export class RecipeNewComponent implements OnInit {
       formData.append("file", files[i], files[i]["name"]);
     }
 
-    this.fileUploadService.postRecipeImage(formData).subscribe(data => {
+    this.subscriptions.add(this.fileUploadService.postRecipeImage(formData).subscribe(data => {
       recipe.imageUrl = data["data"];
       this.recipeService.newRecipe(recipe).subscribe((data: any) => {
         if (data.success) {
@@ -101,7 +153,7 @@ export class RecipeNewComponent implements OnInit {
           this.router.navigate(["/recipes"]);
         }
       });
-    });
+    }));
   }
 
   fileChangeEvent(fileInput: any) {

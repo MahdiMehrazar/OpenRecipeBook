@@ -19,7 +19,8 @@
       </div>
       <div class="form-group">
         <label for="instructions">Instructions</label>
-        <textarea required id="instructions" name="instructions" #instructions="ngModel" ngModel class="form-control"></textarea>
+        <!-- <textarea required id="instructions" name="instructions" #instructions="ngModel" ngModel class="form-control"></textarea> -->
+        <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="htmlContent" [config]="editorConfig" required id="instructions" name="instructions" #instructions="ngModel" ngModel class="form-control"></app-ngx-editor>
       </div>
       <div class="alert alert-warning" *ngIf="!instructions.valid && instructions.touched">
         Please enter instructions for the recipe.

@@ -1,15 +1,17 @@
 import { UserAuthService } from './../../../services/userauth.service';
 import { RecipeService } from "./../../../services/recipe.service";
 import { UserService } from "./../../../services/user.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Params, Router, ActivatedRoute } from "@angular/router";
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: "app-user-profile",
   templateUrl: "./user-profile.component.html",
   styleUrls: ["./user-profile.component.css"]
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   userProfile: Object;
   recipes: Object;
   params: Params;
@@ -32,7 +34,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.user = this.userAuthService.getUserInfo();
 
-    this.userService.getUser(this.username).subscribe(
+    this.subscriptions.add(this.userService.getUser(this.username).subscribe(
       (data: any) => {
         this.userProfile = data["user"];
         this.recipeService
@@ -44,7 +46,11 @@ export class UserProfileComponent implements OnInit {
       error => {
         console.log(error);
       }
-    );
+    ));
+  }
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
   }
 
   adminCheck() {
@@ -58,12 +64,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   adminDeleteUser(){
-    this.userAuthService.deleteUser(this.userProfile["_id"]).subscribe((data: any) => {
+    this.subscriptions.add(this.userAuthService.deleteUser(this.userProfile["_id"]).subscribe((data: any) => {
       if (data.success) {
         this.router.navigate(["/"]);
       } else {
         return false;
       }
-    });
+    }));
   }
 }

@@ -2,15 +2,17 @@ import { FileuploadService } from "./../../../services/fileupload.service";
 import { FlashMessagesService } from "angular2-flash-messages";
 import { UserAuthService } from "./../../../services/userauth.service";
 import { RecipeService } from "./../../../services/recipe.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Params, Router, ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: "app-recipe-edit",
   templateUrl: "./recipe-edit.component.html",
   styleUrls: ["./recipe-edit.component.css"]
 })
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
   recipe: Object;
   params: Params;
   id: number;
@@ -37,27 +39,78 @@ export class RecipeEditComponent implements OnInit {
     });
   }
 
+  editorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: "300px",
+    minHeight: "0",
+    width: "auto",
+    minWidth: "0",
+    translate: "yes",
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: "Enter instructions here",
+    imageEndPoint: "",
+    toolbar: [
+      [
+        "bold",
+        "italic",
+        "underline",
+        "superscript",
+        "subscript"
+      ],
+      ["fontSize"],
+      [
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+        "indent",
+        "outdent"
+      ],
+      ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
+      [
+        "paragraph",
+        "blockquote",
+        "removeBlockquote",
+        "horizontalLine",
+        "orderedList",
+        "unorderedList"
+      ],
+      ["link", "unlink", "video"]
+    ]
+  };
+
   ngOnInit() {
     this.user = this.userAuthService.getUserInfo();
-    this.recipeService.getRecipeById(this.id).subscribe(
+    this.subscriptions.add(this.recipeService.getRecipeById(this.id).subscribe(
       data => {
         this.recipe = data["recipe"];
         // Check Recipe Ownership
-        this.recipe["author"]["username"] == this.user["username"] || this.user["role"] == "admin"
+        this.recipe["author"]["username"] == this.user["username"] ||
+        this.user["role"] == "admin"
           ? (this.editMode = true)
           : this.router.navigate(["/recipes/" + this.id]);
       },
       error => {
         console.log(error);
       }
-    );
+    ));
   }
+
+  ngOnDestroy () {
+    this.subscriptions.unsubscribe()
+  }  
 
   onEditRecipe(form) {
     //split tags into array
-    var tags = form.value.tags.toString().split(",").filter(e => {
-      return typeof e === "string" && e.length > 2;
-    }).map(string => string.trim());
+    var tags = form.value.tags
+      .toString()
+      .split(",")
+      .filter(e => {
+        return typeof e === "string" && e.length > 2;
+      })
+      .map(string => string.trim());
 
     const recipe = {
       name: form.value.name,
@@ -77,7 +130,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   submitFormWithImageURL(recipe) {
-    this.recipeService.editRecipe(this.id, recipe).subscribe((data: any) => {
+    this.subscriptions.add(this.recipeService.editRecipe(this.id, recipe).subscribe((data: any) => {
       if (data.success) {
         this.flashMessagesService.show("Recipe edited!", {
           cssClass: "alert-success",
@@ -93,7 +146,7 @@ export class RecipeEditComponent implements OnInit {
         this.submitted = false;
         this.router.navigate(["/recipes/" + this.id]);
       }
-    });
+    }));
   }
 
   submitFormWithImageUpload(recipe) {
@@ -104,7 +157,7 @@ export class RecipeEditComponent implements OnInit {
       formData.append("file", files[i], files[i]["name"]);
     }
 
-    this.fileUploadService.postRecipeImage(formData).subscribe(data => {
+    this.subscriptions.add(this.fileUploadService.postRecipeImage(formData).subscribe(data => {
       recipe.imageUrl = data["data"];
       this.recipeService.editRecipe(this.id, recipe).subscribe((data: any) => {
         if (data.success) {
@@ -123,7 +176,7 @@ export class RecipeEditComponent implements OnInit {
           this.router.navigate(["/recipes/" + this.id]);
         }
       });
-    });
+    }));
   }
 
   fileChangeEvent(fileInput: any) {

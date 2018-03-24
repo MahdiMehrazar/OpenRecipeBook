@@ -7,6 +7,7 @@ import { FlashMessagesModule } from "angular2-flash-messages";
 import { AuthModule, AuthLoader, AuthStaticLoader } from "@ngx-auth/core";
 import { NgxPaginationModule } from "ngx-pagination";
 import { ShareModule } from "@ngx-share/core";
+import { NgxEditorModule } from 'ngx-editor';
 
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
@@ -139,7 +140,8 @@ export function authFactory(): AuthLoader {
           }
         }
       }
-    })
+    }),
+    NgxEditorModule 
   ],
   providers: [
     UserAuthService,
