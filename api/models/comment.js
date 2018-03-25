@@ -4,6 +4,7 @@ var commentSchema = mongoose.Schema(
   {
     text: String,
     imageUrl: String,
+    date: { type: Date, default: Date },
     author: {
       id: {
         type: mongoose.Schema.Types.ObjectId,

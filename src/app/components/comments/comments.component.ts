@@ -43,7 +43,6 @@ export class CommentsComponent implements OnInit, OnDestroy {
           this.recipeService.getRecipeById(this.recipe["recipeId"]).subscribe(
             data => {
               this.recipe = data["recipe"];
-              console.log(this.recipe);
             },
             error => {
               console.log(error);

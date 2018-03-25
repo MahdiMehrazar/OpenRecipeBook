@@ -70,7 +70,7 @@ export class RecipeNewComponent implements OnInit, OnDestroy {
         "orderedList",
         "unorderedList"
       ],
-      ["link", "unlink", "video"]
+      ["link", "unlink", "image", "video"]
     ]
   };
 

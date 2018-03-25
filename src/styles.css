@@ -10,6 +10,11 @@ h2 {
   font-size: 52px;
   margin-top: 20px;
 }
+.date {
+  font-style: italic;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
 .alert {
   border: 0px;
 }
@@ -25,6 +30,10 @@ h2 {
   display: inline-block;
 }
 #upload_button input[type="file"] {
+  display: none;
+}
+
+div.imgc-topbar.btn-ctnr{
   display: none;
 }
 

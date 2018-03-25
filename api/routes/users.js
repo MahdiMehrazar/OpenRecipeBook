@@ -82,6 +82,7 @@ router.post("/authenticate", (req, res, next) => {
             name: user.name,
             username: user.username,
             email: user.email,
+            date: user.date,
             role: user.role
           }
         });
@@ -127,8 +128,6 @@ router.delete(
     Recipe.remove({ "author.username": req.user.username }, err => {
       if (err) {
         console.log(err);
-      } else {
-        console.log("deleted user recipes successfully");
       }
     });
 
@@ -140,7 +139,6 @@ router.delete(
           console.log(err);
         } else {
           commentId = foundComment;
-          console.log(commentId);
           Recipe.update(
             {},
             { $pull: { comments: { $in: commentId } } },
@@ -149,9 +147,6 @@ router.delete(
               if (err) {
                 console.log(err);
               } else {
-                console.log(
-                  "deleted user comments references from recipe successfully"
-                );
                 // Delete all user comments
                 Comment.remove(
                   { "author.username": req.user.username },
@@ -159,7 +154,17 @@ router.delete(
                     if (err) {
                       console.log(err);
                     } else {
-                      console.log("deleted user comments successfully");
+                      //Delete all user ratings from recipes
+                      Recipe.update(
+                        {},
+                        { $pull: { ratedBy: { username: req.user.username } } },
+                        { multi: true },
+                        err => {
+                          if (err) {
+                            console.log(err);
+                          }
+                        }
+                      );
                     }
                   }
                 );

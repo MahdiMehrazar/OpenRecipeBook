@@ -48,7 +48,7 @@
 
 <div class="container">
   <div class="col-lg-12 list-group">
-    <div *ngFor="let user of users | paginate: {itemsPerPage: 10, currentPage: page, totalItems: total  }">
+    <div *ngFor="let user of users | paginate: {itemsPerPage: 10, currentPage: page, totalItems: total - 1  }">
       <a style="cursor: pointer" class="list-group-item list-group-item-action clearfix" [routerLink]="['/users', user.username]">{{ user.username }}</a>
     </div>
   </div>

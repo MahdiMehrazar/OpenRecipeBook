@@ -105,8 +105,6 @@ router.delete(
       err => {
         if (err) {
           console.log(err);
-        } else {
-          console.log("deleted user comments from recipe successfully");
         }
       }
     );
@@ -118,8 +116,6 @@ router.delete(
       err => {
         if (err) {
           console.log(err);
-        } else {
-          console.log("deleted user comments from user successfully");
         }
       }
     );

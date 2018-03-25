@@ -2,6 +2,7 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">
+          <p class="date">{{ comment.date | date: 'dd/MM/yyyy'}}</p>
         <a style="cursor: pointer" [routerLink]="['/users', comment.author.username]">{{ comment.author.username }}</a>
       </h5>
 

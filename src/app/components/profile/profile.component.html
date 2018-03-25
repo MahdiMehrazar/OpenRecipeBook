@@ -7,6 +7,10 @@
                 <h5>Username</h5> {{user.username}}</li>
             <li class="list-group-item">
                 <h5>Email</h5> {{user.email}}</li>
+            <li class="list-group-item">
+                <h5>Registration Date</h5>
+                <p>{{ user.date | date: 'dd/MM/yyyy'}}</p>
+            </li>
         </ul>
 
         <button class="btn btn-danger" (click)="deleteConfirmationNotice = true">

@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression')
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -35,6 +36,10 @@ app.use(bodyParser.json());
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// compress all responses
+app.use(compression());
+
 
 require('./api/config/passport')(passport);
 

@@ -34,6 +34,7 @@ const UserSchema = mongoose.Schema({
     minlength: 6,
     maxlength: 64
   },
+  date: { type: Date, default: Date },
   recipes: [
     {
       type: mongoose.Schema.Types.ObjectId,

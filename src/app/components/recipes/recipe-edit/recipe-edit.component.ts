@@ -77,7 +77,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         "orderedList",
         "unorderedList"
       ],
-      ["link", "unlink", "video"]
+      ["link", "unlink", "image", "video"]
     ]
   };
 

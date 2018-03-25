@@ -47,8 +47,6 @@ const multer = Multer({
 });
 
 router.post("/upload", multer.single("file"), (req, res) => {
-  console.log("Uploading Image");
-
   let file = req.file;
   if (file) {
     uploadImageToStorage(file)

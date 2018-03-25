@@ -13,6 +13,7 @@ var recipeSchema = mongoose.Schema({
         },
         username: String
     },
+    date: { type: Date, default: Date },
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,

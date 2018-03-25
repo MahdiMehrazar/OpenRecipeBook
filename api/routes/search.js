@@ -50,8 +50,6 @@ router.get("/recipes/tags/:tags", (req, res) => {
   //split tags into array
   var searchArray = req.params.tags.split(",").map(string => string.trim());
 
-  console.log(searchArray);
-
   Recipe.find({ tags: { $in: searchArray } }).exec(
     (err, allRecipes) => {
       if (err) {

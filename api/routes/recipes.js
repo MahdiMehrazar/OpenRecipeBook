@@ -40,8 +40,6 @@ router.post(
       tags: tags
     };
 
-    console.log(newRecipe);
-
     Recipe.create(newRecipe, (err, newlyCreated) => {
       if (err) {
         console.log(err);
@@ -178,7 +176,6 @@ router.delete(
         console.log(err);
       } else {
         recipeId = foundRecipe;
-        console.log(recipeId);
         User.update(
           {},
           { $pull: { recipes: { $in: recipeId } } },
@@ -186,8 +183,6 @@ router.delete(
           err => {
             if (err) {
               console.log(err);
-            } else {
-              console.log("deleted recipe reference from user successfully");
             }
           }
         );
@@ -278,10 +273,8 @@ router.put(
             if (!isInArray) {
               user.favouriteRecipes.push(foundRecipe);
               user.save();
-              console.log("favourited recipe");
               res.json({ success: true, msg: "Favourited recipe" });
             } else {
-              console.log("recipe already favourited");
               res.json({ success: false, msg: "Recipe already favourited" });
             }
           }
@@ -307,7 +300,6 @@ router.put(
           } else {
             user.favouriteRecipes.pull(foundRecipe);
             user.save();
-            console.log("unfavourited recipe");
             res.json({ success: true, msg: "Unfavourited recipe" });
           }
         });
