@@ -11,18 +11,28 @@ import { environment } from "../../environments/environment";
 import { UserAuthService } from "./userauth.service";
 
 @Injectable()
-export class FileuploadService {
+export class FileService {
   constructor(
     private http: HttpClient,
     private userAuthService: UserAuthService
   ) {}
 
-  postRecipeImage(formData) {
+  postImage(formData) {
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", this.userAuthService.getToken());
     headers = headers.delete("Content-Type");
     return this.http.post(environment.baseUrl + "api/files/upload", formData, {
       headers: headers
+    });
+  }
+
+  deleteImage(fileName) {
+    let headers = new HttpHeaders();
+    headers = headers.append("Authorization", this.userAuthService.getToken());
+    headers = headers.append("Content-Type", "application/json");
+    return this.http.delete(environment.baseUrl + "api/files/delete/" + fileName, {
+      headers: headers,
+      params: fileName
     });
   }
 }

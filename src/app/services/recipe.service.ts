@@ -36,7 +36,6 @@ export class RecipeService {
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", this.userAuthService.getToken());
     headers = headers.append("Content-Type", "application/json");
-    console.log("edited" + recipeId + recipe.name);
     return this.http.put(
       environment.baseUrl + "api/recipes/" + recipeId,
       recipe,
@@ -50,7 +49,6 @@ export class RecipeService {
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", this.userAuthService.getToken());
     headers = headers.append("Content-Type", "application/json");
-    console.log("deleted recipe with ID" + recipeId);
     return this.http.delete(environment.baseUrl + "api/recipes/" + recipeId, {
       headers: headers,
       params: recipeId

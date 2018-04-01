@@ -1,4 +1,4 @@
-import { FileuploadService } from "./../../../services/fileupload.service";
+import { FileService } from "../../../services/file.service";
 import { RecipeService } from "./../../../services/recipe.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
@@ -29,7 +29,7 @@ export class RecipeNewComponent implements OnInit, OnDestroy {
     private recipeService: RecipeService,
     private router: Router,
     private flashMessagesService: FlashMessagesService,
-    private fileUploadService: FileuploadService
+    private fileService: FileService
   ) {}
 
   editorConfig = {
@@ -134,7 +134,7 @@ export class RecipeNewComponent implements OnInit, OnDestroy {
       formData.append("file", files[i], files[i]["name"]);
     }
 
-    this.subscriptions.add(this.fileUploadService.postRecipeImage(formData).subscribe(data => {
+    this.subscriptions.add(this.fileService.postImage(formData).subscribe(data => {
       recipe.imageUrl = data["data"];
       this.recipeService.newRecipe(recipe).subscribe((data: any) => {
         if (data.success) {

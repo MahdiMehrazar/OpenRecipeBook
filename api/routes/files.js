@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const middleware = require("../middleware");
+const passport = require("passport");
 
 const uuidv4 = require("uuid/v4");
 const path = require("path");
@@ -46,20 +47,38 @@ const multer = Multer({
   }
 });
 
-router.post("/upload", multer.single("file"), (req, res) => {
-  let file = req.file;
-  if (file) {
-    uploadImageToStorage(file)
-      .then(success => {
-        res.json({ data: success });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+router.post(
+  "/upload",
+  multer.single("file"),
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let file = req.file;
+    let username = req.user.username;
+    if (file) {
+      uploadImageToStorage(file, username)
+        .then(success => {
+          res.json({ data: success });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
-});
+);
 
-const uploadImageToStorage = file => {
+router.delete(
+  "/delete/:fileName",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    var fileName = req.params.fileName;
+    let username = req.user.username;
+    if (fileName) {
+      checkImageOwner(fileName, username);
+    }
+  }
+);
+
+const uploadImageToStorage = (file, username) => {
   let prom = new Promise((resolve, reject) => {
     if (!file) {
       reject("No image file");
@@ -70,7 +89,10 @@ const uploadImageToStorage = file => {
 
     const blobStream = fileUpload.createWriteStream({
       metadata: {
-        contentType: file.mimetype
+        contentType: file.mimetype,
+        metadata: {
+          user: username
+        }
       }
     });
 
@@ -93,5 +115,34 @@ const uploadImageToStorage = file => {
   });
   return prom;
 };
+
+const checkImageOwner = (fileName, username) => {
+  let file = bucket
+    .file(fileName)
+    .getMetadata()
+    .then(results => {
+      const metadata = results[0];
+      if (metadata.metadata.user == username) {
+        deleteImage(fileName, username);
+      } else {
+        console.log("You do not have permission to delete this image.")
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+
+function deleteImage(fileName, username) {
+  let file = bucket.file(fileName);
+
+  const del = file
+    .delete()
+    .then(() => {
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
 
 module.exports = router;

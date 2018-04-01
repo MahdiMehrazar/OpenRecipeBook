@@ -1,4 +1,4 @@
-import { FileuploadService } from "./../../services/fileupload.service";
+import { FileService } from "../../services/file.service";
 import { CommentService } from "./../../services/comment.service";
 import { UserAuthService } from "./../../services/userauth.service";
 import { RecipeService } from "./../../services/recipe.service";
@@ -27,7 +27,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     private recipeService: RecipeService,
     private userAuthService: UserAuthService,
     private commentService: CommentService,
-    private fileUploadService: FileuploadService,
+    private fileService: FileService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -114,7 +114,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     }
 
     this.subscriptions.add(
-      this.fileUploadService.postRecipeImage(formData).subscribe(data => {
+      this.fileService.postImage(formData).subscribe(data => {
         comment.imageUrl = data["data"];
         this.commentService
           .newComment(this.recipe["recipeId"], comment)

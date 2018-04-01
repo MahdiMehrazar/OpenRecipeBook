@@ -2,7 +2,7 @@ import { RecipeService } from "./../../../services/recipe.service";
 import { UserAuthService } from "./../../../services/userauth.service";
 import { Component, OnInit, Input, Output, OnDestroy } from "@angular/core";
 import { CommentService } from "../../../services/comment.service";
-import { FileuploadService } from "../../../services/fileupload.service";
+import { FileService } from "../../../services/file.service";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
@@ -15,11 +15,13 @@ export class CommentComponent implements OnInit, OnDestroy {
   @Input() comment: Object;
   @Input() recipe: Object;
   user: Object;
+  initialImageUrl: String;
 
   successEdit;
   editMode = false;
   submitted = false;
   deleteConfirmationNotice = false;
+  imageChanged = false;
 
   fileName: String;
   filesToUpload: Array<File> = [];
@@ -28,12 +30,13 @@ export class CommentComponent implements OnInit, OnDestroy {
   constructor(
     private userAuthService: UserAuthService,
     private commentService: CommentService,
-    private fileUploadService: FileuploadService,
+    private fileService: FileService,
     private recipeService: RecipeService
   ) {}
 
   ngOnInit() {
     this.user = this.userAuthService.getUserInfo();
+    this.initialImageUrl = this.comment["imageUrl"];
   }
 
   ngOnDestroy () {
@@ -62,6 +65,25 @@ export class CommentComponent implements OnInit, OnDestroy {
     };
 
     this.submitted = true;
+
+    if (this.initialImageUrl != form.value.imageUrl || this.imageUploading) {
+      this.imageChanged = true;
+    }
+
+    if (this.imageChanged) {
+      this.initialImageUrl = this.initialImageUrl.replace(
+        "https://firebasestorage.googleapis.com/v0/b/openrecipebook.appspot.com/o/",
+        ""
+      );
+      this.subscriptions.add(
+        this.fileService.deleteImage(this.initialImageUrl).subscribe(
+          data => {},
+          error => {
+            console.log(error);
+          }
+        )
+      );
+    }
 
     if (!this.imageUploading) {
       this.submitFormWithImageURL(comment);
@@ -97,7 +119,7 @@ export class CommentComponent implements OnInit, OnDestroy {
       formData.append("file", files[i], files[i]["name"]);
     }
 
-    this.subscriptions.add(this.fileUploadService.postRecipeImage(formData).subscribe(data => {
+    this.subscriptions.add(this.fileService.postImage(formData).subscribe(data => {
       comment.imageUrl = data["data"];
       this.commentService
         .editComment(this.recipe["recipeId"], this.comment["_id"], comment)
@@ -120,6 +142,19 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   deleteComment() {
     this.submitted = true;
+
+    this.initialImageUrl = this.initialImageUrl.replace(
+      "https://firebasestorage.googleapis.com/v0/b/openrecipebook.appspot.com/o/",
+      ""
+    );
+    this.subscriptions.add(
+      this.fileService.deleteImage(this.initialImageUrl).subscribe(
+        data => {},
+        error => {
+          console.log(error);
+        }
+      )
+    );
 
     this.subscriptions.add(this.commentService
       .deleteComment(this.recipe["recipeId"], this.comment["_id"])

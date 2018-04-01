@@ -35,7 +35,7 @@ import { ValidateService } from "./services/validate.service";
 import { RecipeService } from "./services/recipe.service";
 import { UserService } from "./services/user.service";
 import { CommentService } from "./services/comment.service";
-import { FileuploadService } from "./services/fileupload.service";
+import { FileService } from "./services/file.service";
 
 import { AuthGuard } from "./guards/auth.guard";
 import { LoggedinGuard } from "./guards/loggedin.guard";
@@ -149,7 +149,7 @@ export function authFactory(): AuthLoader {
     RecipeService,
     UserService,
     CommentService,
-    FileuploadService,
+    FileService,
     AuthGuard,
     LoggedinGuard
   ],
