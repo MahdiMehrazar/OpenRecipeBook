@@ -3,8 +3,8 @@
   height: 100vh;
   width: 100vw;
   position: fixed;
-  left: 0;
-  top: 0;
+  left: 0px;
+  top: 0px;
   z-index: 10;
   opacity: 0.65;
   background-position: center;
@@ -18,16 +18,16 @@
   color: white;
   background: rgba(255, 212, 93, 0.014);
   position: absolute;
-  left: 0;
+  left: 0px;
   top: 20%;
   width: 100%;
   text-align: center;
 }
 
 .mytext {
-  position:absolute;
-  bottom:0;
-  right:0;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
   opacity: 1;
   font-size: 18px;
   font-family: "PT Serif", serif;
@@ -52,4 +52,3 @@ html {
   height: 100%;
   margin: 0;
 } */
-
