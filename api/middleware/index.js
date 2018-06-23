@@ -5,6 +5,7 @@ const User = require("../models/user");
 
 var middlewareObj = {};
 
+//Check if currently logged in user posted the recipe
 middlewareObj.checkRecipeOwnership = (req, res, next) => {
   Recipe.findOne({ recipeId: req.params["id"] }).exec((err, foundRecipe) => {
     if (err) {
@@ -19,6 +20,7 @@ middlewareObj.checkRecipeOwnership = (req, res, next) => {
   });
 };
 
+//Check if currently logged in user posted the comment
 middlewareObj.checkCommentOwnership = (req, res, next) => {
   Comment.findById(req.params.commentId, (err, foundComment) => {
     if (err) {
@@ -33,6 +35,7 @@ middlewareObj.checkCommentOwnership = (req, res, next) => {
   });
 };
 
+//Check if currently logged in user owns the account
 middlewareObj.checkAccountOwnership = (req, res, next) => {
   User.findById(req.params.id, (err, foundUser) => {
     if (err) {

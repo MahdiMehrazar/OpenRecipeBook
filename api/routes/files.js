@@ -14,6 +14,7 @@ try {
   console.log(ex);
 }
 
+//Firebase details
 const projectId = "openrecipebook";
 const bucketName = "openrecipebook.appspot.com";
 
@@ -33,6 +34,7 @@ const gcs = require("@google-cloud/storage")({
 
 const bucket = gcs.bucket(bucketName);
 
+//Use multer to handle form data
 const multer = Multer({
   storage: Multer.memoryStorage(),
   limits: {
@@ -47,6 +49,7 @@ const multer = Multer({
   }
 });
 
+//Upload image route
 router.post(
   "/upload",
   multer.single("file"),
@@ -66,6 +69,7 @@ router.post(
   }
 );
 
+//Delete image route
 router.delete(
   "/delete/:fileName",
   passport.authenticate("jwt", { session: false }),
@@ -78,6 +82,7 @@ router.delete(
   }
 );
 
+//Upload image to firebase bucket
 const uploadImageToStorage = (file, username) => {
   let prom = new Promise((resolve, reject) => {
     if (!file) {
@@ -116,6 +121,7 @@ const uploadImageToStorage = (file, username) => {
   return prom;
 };
 
+//Check image ownership
 const checkImageOwner = (fileName, username) => {
   let file = bucket
     .file(fileName)
@@ -133,6 +139,7 @@ const checkImageOwner = (fileName, username) => {
     });
 };
 
+//Delete image
 function deleteImage(fileName, username) {
   let file = bucket.file(fileName);
 

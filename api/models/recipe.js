@@ -34,6 +34,7 @@ var recipeSchema = mongoose.Schema({
 
 }, {usePushEach: true});
 
+//Plugin which autoincrements the recipeId instead of a randomly generated id
 recipeSchema.plugin(AutoIncrement, {inc_field: 'recipeId'});
 
 module.exports = mongoose.model("Recipe", recipeSchema);
